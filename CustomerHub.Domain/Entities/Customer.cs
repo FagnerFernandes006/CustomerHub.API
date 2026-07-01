@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using CustomerHub.Domain.Exceptions;
 
 namespace CustomerHub.Domain.Entities;
 
@@ -14,43 +15,40 @@ public class Customer
     {
     }
 
-    public Customer(
-        string name,
-        string email)
+    public Customer(string name, string email)
     {
         Id = Guid.NewGuid();
 
-        Update(name, email);
+        ChangeName(name);
+
+        ChangeEmail(email);
     }
 
-    public void Update(
-        string name,
-        string email)
-    {
-        Validate(name, email);
-
-        Name = name;
-
-        Email = email;
-    }
-
-    private static void Validate(
-        string name,
-        string email)
+    public void ChangeName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new Exception(
-                "Nome é obrigatório");
+            throw new DomainException("Nome é obrigatório");
 
+        Name = name.Trim();
+    }
+
+    public void ChangeEmail(string email)
+    {
         if (string.IsNullOrWhiteSpace(email))
-            throw new Exception(
-                "Email é obrigatório");
+            throw new DomainException("Email é obrigatório");
 
-        var validator =
-            new EmailAddressAttribute();
+        var validator = new EmailAddressAttribute();
 
         if (!validator.IsValid(email))
-            throw new Exception(
-                "Email inválido");
+            throw new DomainException("Email inválido");
+
+        Email = email.Trim().ToLower();
+    }
+
+    public void Update(string name, string email)
+    {
+        ChangeName(name);
+
+        ChangeEmail(email);
     }
 }

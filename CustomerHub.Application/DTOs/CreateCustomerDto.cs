@@ -4,8 +4,5 @@ using System.Text;
 
 namespace CustomerHub.Application.DTOs
 {
-    public record CreateCustomerDto(
-       string Name,
-       string Email
-   );
+    public record CreateCustomerDto(string Name, string Email);
 }

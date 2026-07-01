@@ -5,19 +5,14 @@ public class CustomerService
 {
     private readonly ICustomerRepository _repository;
 
-    public CustomerService(
-        ICustomerRepository repository)
+    public CustomerService(ICustomerRepository repository)
     {
         _repository = repository;
     }
 
-    public async Task<CustomerResponseDto> Create(
-        CreateCustomerDto dto)
+    public async Task<CustomerResponseDto> Create(CreateCustomerDto dto)
     {
-        var customer =
-            new Customer(
-                dto.Name,
-                dto.Email);
+        var customer = new Customer(dto.Name, dto.Email);
 
         await _repository.Create(customer);
 
@@ -29,8 +24,7 @@ public class CustomerService
 
     public async Task<List<CustomerResponseDto>> GetAll()
     {
-        var customers =
-            await _repository.GetAll();
+        var customers = await _repository.GetAll();
 
         return customers
             .Select(x =>
@@ -41,11 +35,9 @@ public class CustomerService
             .ToList();
     }
 
-    public async Task<CustomerResponseDto?> GetById(
-        Guid id)
+    public async Task<CustomerResponseDto?> GetById(Guid id)
     {
-        var customer =
-            await _repository.GetById(id);
+        var customer = await _repository.GetById(id);
 
         if (customer == null)
             return null;
@@ -56,9 +48,7 @@ public class CustomerService
             customer.Email);
     }
 
-    public async Task<bool> Update(
-        Guid id,
-        UpdateCustomerDto dto)
+    public async Task<bool> Update(Guid id, UpdateCustomerDto dto)
     {
         var customer =
             await _repository.GetById(id);
@@ -75,11 +65,9 @@ public class CustomerService
         return true;
     }
 
-    public async Task<bool> Delete(
-        Guid id)
+    public async Task<bool> Delete(Guid id)
     {
-        var customer =
-            await _repository.GetById(id);
+        var customer = await _repository.GetById(id);
 
         if (customer == null)
             return false;

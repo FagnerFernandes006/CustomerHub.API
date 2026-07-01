@@ -7,34 +7,24 @@ public class CustomersController : ControllerBase
 {
     private readonly CustomerService _service;
 
-    public CustomersController(
-        CustomerService service)
+    public CustomersController(CustomerService service)
     {
         _service = service;
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(
-        CreateCustomerDto dto)
+    public async Task<IActionResult> Create(CreateCustomerDto dto)
     {
-        try
-        {
-            var customer =
-                await _service.Create(dto);
+        var customer =
+            await _service.Create(dto);
 
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = customer.Id },
-                customer);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(
-                new
-                {
-                    error = ex.Message
-                });
-        }
+        return CreatedAtAction(
+            nameof(GetById),
+            new
+            {
+                id = customer.Id
+            },
+            customer);
     }
 
     [HttpGet]
@@ -47,8 +37,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(
-        Guid id)
+    public async Task<IActionResult> GetById(Guid id)
     {
         var customer =
             await _service.GetById(id);
@@ -60,35 +49,21 @@ public class CustomersController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(
-        Guid id,
-        UpdateCustomerDto dto)
+    public async Task<IActionResult> Update(Guid id, UpdateCustomerDto dto)
     {
-        try
-        {
-            var updated =
-                await _service.Update(
-                    id,
-                    dto);
+        var updated =
+            await _service.Update(
+                id,
+                dto);
 
-            if (!updated)
-                return NotFound();
+        if (!updated)
+            return NotFound();
 
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(
-                new
-                {
-                    error = ex.Message
-                });
-        }
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(
-        Guid id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         var deleted =
             await _service.Delete(id);
