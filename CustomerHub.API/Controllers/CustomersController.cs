@@ -17,9 +17,24 @@ public class CustomersController : ControllerBase
     public async Task<IActionResult> Create(
         CreateCustomerDto dto)
     {
-        await _service.Create(dto);
+        try
+        {
+            var customer =
+                await _service.Create(dto);
 
-        return Ok();
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = customer.Id },
+                customer);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(
+                new
+                {
+                    error = ex.Message
+                });
+        }
     }
 
     [HttpGet]
@@ -49,15 +64,26 @@ public class CustomersController : ControllerBase
         Guid id,
         UpdateCustomerDto dto)
     {
-        var updated =
-            await _service.Update(
-                id,
-                dto);
+        try
+        {
+            var updated =
+                await _service.Update(
+                    id,
+                    dto);
 
-        if (!updated)
-            return NotFound();
+            if (!updated)
+                return NotFound();
 
-        return NoContent();
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(
+                new
+                {
+                    error = ex.Message
+                });
+        }
     }
 
     [HttpDelete("{id}")]

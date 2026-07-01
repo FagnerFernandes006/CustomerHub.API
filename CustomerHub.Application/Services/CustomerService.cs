@@ -11,16 +11,20 @@ public class CustomerService
         _repository = repository;
     }
 
-    public async Task Create(
+    public async Task<CustomerResponseDto> Create(
         CreateCustomerDto dto)
     {
-        var customer = new Customer
-        {
-            Name = dto.Name,
-            Email = dto.Email
-        };
+        var customer =
+            new Customer(
+                dto.Name,
+                dto.Email);
 
         await _repository.Create(customer);
+
+        return new CustomerResponseDto(
+            customer.Id,
+            customer.Name,
+            customer.Email);
     }
 
     public async Task<List<CustomerResponseDto>> GetAll()
@@ -62,8 +66,9 @@ public class CustomerService
         if (customer == null)
             return false;
 
-        customer.Name = dto.Name;
-        customer.Email = dto.Email;
+        customer.Update(
+            dto.Name,
+            dto.Email);
 
         await _repository.Update(customer);
 
