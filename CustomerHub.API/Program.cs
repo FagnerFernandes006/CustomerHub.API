@@ -19,6 +19,8 @@ builder.Services.AddScoped<
     ICustomerRepository,
     CustomerRepository>();
 
+builder.Services.AddScoped<CustomerService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
