@@ -22,17 +22,38 @@ public class CustomerService
             customer.Email);
     }
 
-    public async Task<List<CustomerResponseDto>> GetAll()
+    public async Task<
+   PagedResultDto<CustomerResponseDto>>GetAll(int page, int pageSize)
     {
-        var customers = await _repository.GetAll();
+        if (page < 1)
+            page = 1;
 
-        return customers
-            .Select(x =>
-                new CustomerResponseDto(
-                    x.Id,
-                    x.Name,
-                    x.Email))
-            .ToList();
+        if (pageSize < 1)
+            pageSize = 10;
+
+        var result =await _repository
+                         .GetAll(
+                         page,
+                         pageSize);
+
+        return new PagedResultDto<CustomerResponseDto>
+        {
+            Page = page,
+
+            PageSize = pageSize,
+
+            TotalItems = result.Total,
+
+            TotalPages = (int)Math.Ceiling(result.Total / (double)pageSize),
+
+            Data = result.Customers
+                    .Select(
+                        x =>
+                        new CustomerResponseDto(
+                            x.Id,
+                            x.Name,
+                            x.Email)).ToList()
+        };
     }
 
     public async Task<CustomerResponseDto?> GetById(Guid id)

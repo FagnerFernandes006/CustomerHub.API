@@ -1,8 +1,7 @@
 ﻿using CustomerHub.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-public class CustomerRepository
-: ICustomerRepository
+public class CustomerRepository : ICustomerRepository
 {
     private readonly AppDbContext _context;
 
@@ -19,9 +18,21 @@ public class CustomerRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<Customer>> GetAll()
+    public async Task<(List<Customer>, int)> GetAll(int page, int pageSize)
     {
-        return await _context.Customers.ToListAsync();
+        var query = _context.Customers.AsQueryable();
+
+        var total = await query.CountAsync();
+
+        var customers =
+            await query
+                .Skip(
+                    (page - 1)
+                    * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+        return (customers, total);
     }
 
     public async Task<Customer?> GetById(Guid id)

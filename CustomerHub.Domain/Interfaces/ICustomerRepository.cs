@@ -2,7 +2,7 @@
 
 public interface ICustomerRepository
 {
-    Task<List<Customer>> GetAll();
+    Task<(List<Customer> Customers, int Total)>GetAll(int page, int pageSize);
 
     Task<Customer?> GetById(Guid id);
 
