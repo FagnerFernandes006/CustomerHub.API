@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="CustomerHub.API/CustomerHub.API.csproj" />
+  <Project Path="CustomerHub.Application/CustomerHub.Application.csproj" />
+  <Project Path="CustomerHub.Domain/CustomerHub.Domain.csproj" />
+  <Project Path="CustomerHub.Infrastructure/CustomerHub.Infrastructure.csproj" />
+</Solution>
