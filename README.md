@@ -214,17 +214,6 @@ Abrir:
 * Exception Middleware
 * Paginação
 * API REST
-
----
-
-## Melhorias futuras
-
-* Autenticação JWT
-* Testes unitários
-* FluentValidation
-* Value Objects
-* Docker
-* Logs estruturados
 * CI/CD
 
 ---
